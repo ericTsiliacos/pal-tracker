@@ -22,22 +22,20 @@ public class TimeEntryControllerTest {
     private TimeEntryController controller;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         timeEntryRepository = mock(TimeEntryRepository.class);
         controller = new TimeEntryController(timeEntryRepository);
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void testCreate() {
         TimeEntry timeEntryToCreate = new TimeEntry(123L, 456L, LocalDate.parse("2017-01-08"), 8);
         TimeEntry expectedResult = new TimeEntry(1L, 123L, 456L, LocalDate.parse("2017-01-08"), 8);
         doReturn(expectedResult)
             .when(timeEntryRepository)
             .create(any(TimeEntry.class));
 
-
         ResponseEntity response = controller.create(timeEntryToCreate);
-
 
         verify(timeEntryRepository).create(timeEntryToCreate);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -45,7 +43,7 @@ public class TimeEntryControllerTest {
     }
 
     @Test
-    public void testRead() throws Exception {
+    public void testRead() {
         TimeEntry expected = new TimeEntry(1L, 123L, 456L, LocalDate.parse("2017-01-08"), 8);
         doReturn(expected)
             .when(timeEntryRepository)
@@ -59,7 +57,7 @@ public class TimeEntryControllerTest {
     }
 
     @Test
-    public void testRead_NotFound() throws Exception {
+    public void testRead_NotFound() {
         doReturn(null)
             .when(timeEntryRepository)
             .find(1L);
@@ -69,7 +67,7 @@ public class TimeEntryControllerTest {
     }
 
     @Test
-    public void testList() throws Exception {
+    public void testList() {
         List<TimeEntry> expected = asList(
             new TimeEntry(1L, 123L, 456L, LocalDate.parse("2017-01-08"), 8),
             new TimeEntry(2L, 789L, 321L, LocalDate.parse("2017-01-07"), 4)
@@ -84,7 +82,7 @@ public class TimeEntryControllerTest {
     }
 
     @Test
-    public void testUpdate() throws Exception {
+    public void testUpdate() {
         TimeEntry expected = new TimeEntry(1L, 987L, 654L, LocalDate.parse("2017-01-07"), 4);
         doReturn(expected)
             .when(timeEntryRepository)
@@ -98,7 +96,7 @@ public class TimeEntryControllerTest {
     }
 
     @Test
-    public void testUpdate_NotFound() throws Exception {
+    public void testUpdate_NotFound() {
         doReturn(null)
             .when(timeEntryRepository)
             .update(eq(1L), any(TimeEntry.class));
@@ -108,7 +106,7 @@ public class TimeEntryControllerTest {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testDelete() {
         ResponseEntity<TimeEntry> response = controller.delete(1L);
         verify(timeEntryRepository).delete(1L);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
